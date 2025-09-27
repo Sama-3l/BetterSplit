@@ -1,4 +1,5 @@
 import 'package:bettersplitapp/core/usecase/usecase.dart';
+import 'package:bettersplitapp/core/utils/constants/theme.dart';
 import 'package:bettersplitapp/features/friends/data/usecases/delete_all_users_usecase.dart';
 import 'package:bettersplitapp/features/friends/data/usecases/get_all_users_usecase.dart';
 import 'package:bettersplitapp/features/login/data/usecases/save_user_usecase.dart';
@@ -22,14 +23,50 @@ class LoginCubit extends Cubit<LoginState> {
 
   /// This is where you’d call your use case to persist the user
   Future<void> saveUser(BuildContext context) async {
-    final user = UserEntity(
-      id: Uuid().v4(),
-      name: state.nameController.text,
-      userName: state.usernameController.text,
-      number: "+91${state.phoneNumberController.text}",
-      upiID: state.upiIDController.text,
-      currentUser: true,
-    );
+    UserEntity user;
+    if (state.nameController.text.isNotEmpty ||
+        state.usernameController.text.isNotEmpty ||
+        state.phoneNumberController.text.isNotEmpty ||
+        state.nameController.text.length > 10 ||
+        state.upiIDController.text.isNotEmpty) {
+      user = UserEntity(
+        id: Uuid().v4(),
+        name: state.nameController.text,
+        userName: state.usernameController.text,
+        number: "+91${state.phoneNumberController.text}",
+        upiID: state.upiIDController.text,
+        currentUser: true,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: ColorsConstants.onSurfaceBlack,
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Alert:",
+                style: TextStyles.fustatExtraBold.copyWith(
+                  color: ColorsConstants.warningRed,
+                  letterSpacing: -0.8,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "All Fields Are Required",
+                style: TextStyles.fustatSemiBold.copyWith(
+                  color: ColorsConstants.warningRed,
+                  letterSpacing: -0.5,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+      return;
+    }
 
     final result = await saveUserUseCase(user);
     result.fold((failure) {}, (_) {

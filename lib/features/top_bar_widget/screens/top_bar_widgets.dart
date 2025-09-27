@@ -49,34 +49,33 @@ class _TopBarWidgetsState extends State<TopBarWidgets> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (!widget.tripHeader) ...[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Expenditure, May 2025",
-                      style: TextStyles.fustatSemiBold.copyWith(
-                        fontSize: 12,
-                        letterSpacing: -0.5,
-                        color: ColorsConstants.backgroundBlack.withValues(
-                          alpha: 0.7,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "\$3,400",
-                      style: TextStyles.fustatExtraBold.copyWith(
-                        fontSize: 24,
-                        letterSpacing: -0.8,
-                        fontWeight: FontWeight.w900,
-                        color: ColorsConstants.backgroundBlack,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-              ],
-
+              // if (!widget.tripHeader) ...[
+              //   Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Text(
+              //         "Expenditure, May 2025",
+              //         style: TextStyles.fustatSemiBold.copyWith(
+              //           fontSize: 12,
+              //           letterSpacing: -0.5,
+              //           color: ColorsConstants.backgroundBlack.withValues(
+              //             alpha: 0.7,
+              //           ),
+              //         ),
+              //       ),
+              //       Text(
+              //         "\$3,400",
+              //         style: TextStyles.fustatExtraBold.copyWith(
+              //           fontSize: 24,
+              //           letterSpacing: -0.8,
+              //           fontWeight: FontWeight.w900,
+              //           color: ColorsConstants.backgroundBlack,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              //   const SizedBox(height: 16),
+              // ],
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
