@@ -105,7 +105,11 @@ Future<void> tripDependencies() async {
   );
   // cubit
   sl.registerFactory<HomeScreenCubit>(
-    () => HomeScreenCubit(getAllTripsUsecase: sl(), deleteTripUsecase: sl()),
+    () => HomeScreenCubit(
+      getAllTripsUsecase: sl(),
+      deleteTripUsecase: sl(),
+      updateTripUsecase: sl(),
+    ),
   );
   sl.registerFactory<AddTripCubit>(
     () => AddTripCubit(

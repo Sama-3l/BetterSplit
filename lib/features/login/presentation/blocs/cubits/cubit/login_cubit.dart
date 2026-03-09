@@ -33,7 +33,7 @@ class LoginCubit extends Cubit<LoginState> {
         id: Uuid().v4(),
         name: state.nameController.text,
         userName: state.usernameController.text,
-        number: "+91${state.phoneNumberController.text}",
+        number: state.phoneNumberController.text,
         upiID: state.upiIDController.text,
         currentUser: true,
       );
@@ -70,6 +70,7 @@ class LoginCubit extends Cubit<LoginState> {
 
     final result = await saveUserUseCase(user);
     result.fold((failure) {}, (_) {
+      clear();
       context.read<MainAppCubit>().loadCurrentUser();
     });
   }

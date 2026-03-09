@@ -27,4 +27,9 @@ class MainAppCubit extends Cubit<MainAppState> {
 
   void changeTab(tabIndex) =>
       emit(ChangeTabState(user: state.user, trips: state.trips, tab: tabIndex));
+
+  void logout() async {
+    await userRepository.updateUser(state.user!.copyWith(currentUser: false));
+    emit(MainAppUpdate(trips: [], user: null));
+  }
 }

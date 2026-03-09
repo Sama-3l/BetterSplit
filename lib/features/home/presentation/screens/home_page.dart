@@ -1,6 +1,8 @@
 import 'package:bettersplitapp/core/utils/common/buttons/circular_button.dart';
+import 'package:bettersplitapp/core/utils/constants/methods.dart';
 import 'package:bettersplitapp/features/home/presentation/widgets/trip_tile.dart';
 import 'package:bettersplitapp/features/home/presentation/widgets/trips_header.dart';
+import 'package:bettersplitapp/features/payment_screen/domain/entities/user_share.dart';
 import 'package:bettersplitapp/features/top_bar_widget/screens/top_bar_widgets.dart';
 import 'package:bettersplitapp/core/utils/constants/theme.dart';
 import 'package:bettersplitapp/features/home/domain/entities/user.dart';
@@ -39,7 +41,14 @@ class HomePage extends StatelessWidget {
                   },
                 ),
                 if (state.trips.isEmpty) ...[
-                  TopBarWidgets(currentTab: 0, debts: [], user: user),
+                  TopBarWidgets(
+                    currentTab: 0,
+                    debts: [],
+                    user: user,
+                    onSwiped: (ledger) {
+                      print(ledger.trip);
+                    },
+                  ),
                   const SizedBox(height: 16),
                   TripsHeaderWidget(
                     onAdd: () async {
@@ -61,7 +70,7 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: Text(
-                        "No Payments Yet",
+                        "No Trips Yet",
                         style: TextStyles.fustatBold.copyWith(
                           color: ColorsConstants.defaultWhite.withValues(
                             alpha: 0.5,
@@ -85,6 +94,23 @@ class HomePage extends StatelessWidget {
                                 .where((e) => e.payer.id == user.id)
                                 .toList(),
                             user: user,
+                            onSwiped: (ledger) {
+                              Methods.addPayment(
+                                title:
+                                    "${ledger.payer.name} settled with ${ledger.friend.name}",
+                                amount: ledger.amount,
+                                paidByUser: ledger.payer,
+                                userShares: [
+                                  UserShareEntity(
+                                    user: ledger.payer,
+                                    amount: ledger.amount,
+                                  ),
+                                ],
+                                trip: ledger.trip!,
+                              );
+                              cubit.updateHomeScreen(user);
+                              cubit.updateTrip(ledger.trip!);
+                            },
                           ),
                         ),
 

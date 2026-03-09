@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MakePaymentSlider extends StatefulWidget {
   final LedgerEntity ledger;
-  final VoidCallback onSwiped;
+  final Function(LedgerEntity ledger) onSwiped;
 
   const MakePaymentSlider({
     super.key,
@@ -77,12 +77,13 @@ class _MakePaymentSliderState extends State<MakePaymentSlider> {
                       ),
                       onHorizontalDragEnd: (_) {
                         if (offsetX >= maxLimit * 0.95) {
-                          widget.onSwiped();
+                          widget.onSwiped(widget.ledger);
                           cubit.update(maxLimit);
                         } else {
                           cubit.update(0.0);
                         }
                       },
+                      onTap: () => cubit.update(0.0),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 4.0),
                         child: Container(

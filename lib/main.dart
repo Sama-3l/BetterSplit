@@ -1,4 +1,3 @@
-import 'package:bettersplitapp/features/friends/presentation/blocs/cubits/cubit/friends_page_cubit.dart';
 import 'package:bettersplitapp/features/home/domain/models/local/user_model_local.dart';
 import 'package:bettersplitapp/features/login/presentation/blocs/cubits/cubit/login_cubit.dart';
 import 'package:bettersplitapp/features/main_app/presentation/blocs/cubits/MainAppCubit/main_app_cubit.dart';
@@ -43,7 +42,6 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => SliderAnimationCubit()),
         BlocProvider(create: (context) => sl<AddTripCubit>()),
-        BlocProvider(create: (context) => sl<FriendsPageCubit>()..initialize()),
         // BlocProvider(create: (context) => AddPaymentCubit()),
       ],
       child: MaterialApp.router(

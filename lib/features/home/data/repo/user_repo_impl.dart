@@ -23,6 +23,17 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
+  Future<Either<Failure, void>> updateUser(UserEntity entity) async {
+    try {
+      final userModel = UserModel.fromEntity(entity);
+      await localDataSource.saveUser(userModel);
+      return const Right(null);
+    } catch (e) {
+      return Left(LocalStorageFailure());
+    }
+  }
+
+  @override
   Future<Either<Failure, UserEntity?>> getCurrentUser() async {
     try {
       final userModel = await localDataSource.getCurrentUser();

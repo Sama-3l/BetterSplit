@@ -82,7 +82,7 @@ class LoginPage extends StatelessWidget {
                       const SizedBox(height: 16),
                       InputField(
                         controller: state.phoneNumberController,
-                        hintText: "+91-1234-5678-90",
+                        hintText: "1234-5678-90",
                         title: 'Phone Number',
                       ),
                       const SizedBox(height: 16),

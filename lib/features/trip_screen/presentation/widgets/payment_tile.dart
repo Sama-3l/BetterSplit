@@ -42,7 +42,7 @@ class PaymentTile extends StatelessWidget {
     late String subtitleText;
     late Color subtitleColor;
 
-    if (currUser.id == payment.payer.id) {
+    if (currUser.number == payment.payer.number) {
       // user is payer: show lent = total - their own share
       final lentAmount = totalAmount - myShare;
       amountColor = ColorsConstants.accentGreen;

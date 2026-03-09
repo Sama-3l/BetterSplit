@@ -1,10 +1,8 @@
-import 'package:bettersplitapp/features/top_bar_widget/screens/make_payment_slider.dart';
 import 'package:bettersplitapp/core/utils/constants/theme.dart';
 import 'package:bettersplitapp/features/home/domain/entities/user.dart';
 import 'package:bettersplitapp/features/trip_screen/domain/entities/ledger.dart';
 import 'package:bettersplitapp/features/trip_screen/domain/entities/trip.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 /// The TopBarWidgets in Flutter
 class TopBarWidgets extends StatefulWidget {
@@ -13,6 +11,7 @@ class TopBarWidgets extends StatefulWidget {
   final List<LedgerEntity> debts;
   final List<TripEntity>? trips;
   final double radius;
+  final Function(LedgerEntity ledger) onSwiped;
   final bool tripHeader;
 
   const TopBarWidgets({
@@ -20,7 +19,7 @@ class TopBarWidgets extends StatefulWidget {
     required this.currentTab,
     this.trips,
     required this.debts,
-
+    required this.onSwiped,
     required this.user,
     this.radius = 32,
     this.tripHeader = false,
@@ -35,111 +34,111 @@ class _TopBarWidgetsState extends State<TopBarWidgets> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.currentTab == 0) {
-      return ClipRRect(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(widget.radius),
-          bottomRight: Radius.circular(widget.radius),
-        ),
-        child: Container(
-          color: ColorsConstants.accentGreen,
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: ColorsConstants.surfaceGreen,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (widget.debts.isNotEmpty) ...[
-                      Text(
-                        "Pending Payments",
-                        style: TextStyles.fustatSemiBold.copyWith(
-                          fontSize: 16,
-                          color: ColorsConstants.backgroundBlack,
-                          letterSpacing: -0.8,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
+    // if (widget.currentTab == 0) {
+    //   return ClipRRect(
+    //     borderRadius: BorderRadius.only(
+    //       bottomLeft: Radius.circular(widget.radius),
+    //       bottomRight: Radius.circular(widget.radius),
+    //     ),
+    //     child: Container(
+    //       color: ColorsConstants.accentGreen,
+    //       padding: const EdgeInsets.all(16),
+    //       child: Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: [
+    //           Container(
+    //             padding: const EdgeInsets.all(16),
+    //             decoration: BoxDecoration(
+    //               color: ColorsConstants.surfaceGreen,
+    //               borderRadius: BorderRadius.circular(16),
+    //             ),
+    //             child: Column(
+    //               mainAxisSize: MainAxisSize.min,
+    //               crossAxisAlignment: CrossAxisAlignment.start,
+    //               children: [
+    //                 if (widget.debts.isNotEmpty) ...[
+    //                   Text(
+    //                     "Pending Payments",
+    //                     style: TextStyles.fustatSemiBold.copyWith(
+    //                       fontSize: 16,
+    //                       color: ColorsConstants.backgroundBlack,
+    //                       letterSpacing: -0.8,
+    //                     ),
+    //                   ),
+    //                   const SizedBox(height: 16),
 
-                      SizedBox(
-                        height: 64,
-                        child: PageView.builder(
-                          controller: PageController(viewportFraction: 1),
-                          itemCount: widget.debts.length,
-                          onPageChanged: (index) {
-                            setState(() => visibleIndex = index);
-                          },
-                          itemBuilder: (context, index) {
-                            return MakePaymentSlider(
-                              ledger: widget.debts[index],
-                              onSwiped: () {},
-                            );
-                          },
-                        ),
-                      ),
+    //                   SizedBox(
+    //                     height: 64,
+    //                     child: PageView.builder(
+    //                       controller: PageController(viewportFraction: 1),
+    //                       itemCount: widget.debts.length,
+    //                       onPageChanged: (index) {
+    //                         setState(() => visibleIndex = index);
+    //                       },
+    //                       itemBuilder: (context, index) {
+    //                         return MakePaymentSlider(
+    //                           ledger: widget.debts[index],
+    //                           onSwiped: (ledger) => widget.onSwiped(ledger),
+    //                         );
+    //                       },
+    //                     ),
+    //                   ),
 
-                      if (widget.debts.length > 1) ...[
-                        const SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(widget.debts.length, (index) {
-                            return Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 4),
-                              width: 6,
-                              height: 6,
-                              decoration: BoxDecoration(
-                                color: index == visibleIndex
-                                    ? ColorsConstants.defaultWhite
-                                    : ColorsConstants.defaultWhite.withValues(
-                                        alpha: 0.4,
-                                      ),
-                                shape: BoxShape.circle,
-                              ),
-                            );
-                          }),
-                        ),
-                      ],
-                    ] else ...[
-                      Text(
-                        "Pending Payments",
-                        style: TextStyles.fustatSemiBold.copyWith(
-                          fontSize: 16,
-                          color: ColorsConstants.backgroundBlack,
-                          letterSpacing: -0.8,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: Text(
-                            "No Pending Payments",
-                            style: TextStyles.fustatSemiBold.copyWith(
-                              fontSize: 16,
-                              letterSpacing: -0.8,
-                              color: ColorsConstants.backgroundBlack.withValues(
-                                alpha: 0.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+    //                   if (widget.debts.length > 1) ...[
+    //                     const SizedBox(height: 4),
+    //                     Row(
+    //                       mainAxisAlignment: MainAxisAlignment.center,
+    //                       children: List.generate(widget.debts.length, (index) {
+    //                         return Container(
+    //                           margin: const EdgeInsets.symmetric(horizontal: 4),
+    //                           width: 6,
+    //                           height: 6,
+    //                           decoration: BoxDecoration(
+    //                             color: index == visibleIndex
+    //                                 ? ColorsConstants.defaultWhite
+    //                                 : ColorsConstants.defaultWhite.withValues(
+    //                                     alpha: 0.4,
+    //                                   ),
+    //                             shape: BoxShape.circle,
+    //                           ),
+    //                         );
+    //                       }),
+    //                     ),
+    //                   ],
+    //                 ] else ...[
+    //                   Text(
+    //                     "Pending Payments",
+    //                     style: TextStyles.fustatSemiBold.copyWith(
+    //                       fontSize: 16,
+    //                       color: ColorsConstants.backgroundBlack,
+    //                       letterSpacing: -0.8,
+    //                     ),
+    //                   ),
+    //                   const SizedBox(height: 16),
+    //                   Center(
+    //                     child: Padding(
+    //                       padding: const EdgeInsets.symmetric(vertical: 16.0),
+    //                       child: Text(
+    //                         "No Pending Payments",
+    //                         style: TextStyles.fustatSemiBold.copyWith(
+    //                           fontSize: 16,
+    //                           letterSpacing: -0.8,
+    //                           color: ColorsConstants.backgroundBlack.withValues(
+    //                             alpha: 0.5,
+    //                           ),
+    //                         ),
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ],
+    //               ],
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   );
+    // }
 
     // Account tab view
     if (widget.currentTab == 2) {
@@ -215,7 +214,7 @@ class _TopBarWidgetsState extends State<TopBarWidgets> {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: _infoTab("UPI ID", widget.user.upiID),
                     ),
-                    _infoTab("Phone Number", "+91-${widget.user.number}"),
+                    _infoTab("Phone Number", widget.user.number),
                   ],
                 ),
               ),

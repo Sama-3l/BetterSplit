@@ -54,35 +54,35 @@ class CustomTabBar extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 16),
+          // const SizedBox(width: 16),
           // Floating QR button
-          GestureDetector(
-            onTap: () => onTabSelected(3),
-            child: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: selectedIndex == 3
-                    ? ColorsConstants
-                          .accentGreen // accentGreen
-                    : ColorsConstants.surfaceBlack, // surfaceBlack
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: selectedIndex != 3
-                      ? ColorsConstants
-                            .accentGreen // accentGreen
-                      : ColorsConstants.surfaceBlack,
-                  width: 1,
-                ),
-              ),
-              child: Icon(
-                Icons.qr_code_scanner,
-                size: 20,
-                color: selectedIndex == 3
-                    ? ColorsConstants.surfaceBlack
-                    : ColorsConstants.defaultWhite, // defaultWhite
-              ),
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () => onTabSelected(3),
+          //   child: Container(
+          //     padding: const EdgeInsets.all(12),
+          //     decoration: BoxDecoration(
+          //       color: selectedIndex == 3
+          //           ? ColorsConstants
+          //                 .accentGreen // accentGreen
+          //           : ColorsConstants.surfaceBlack, // surfaceBlack
+          //       shape: BoxShape.circle,
+          //       border: Border.all(
+          //         color: selectedIndex != 3
+          //             ? ColorsConstants
+          //                   .accentGreen // accentGreen
+          //             : ColorsConstants.surfaceBlack,
+          //         width: 1,
+          //       ),
+          //     ),
+          //     child: Icon(
+          //       Icons.qr_code_scanner,
+          //       size: 20,
+          //       color: selectedIndex == 3
+          //           ? ColorsConstants.surfaceBlack
+          //           : ColorsConstants.defaultWhite, // defaultWhite
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

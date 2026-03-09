@@ -93,7 +93,6 @@ class AddTripCubit extends Cubit<AddTripState> {
           }
         });
       }
-      print(trip.payments);
       await saveTripUseCase(trip);
       GoRouter.of(context).pop(true);
     }

@@ -24,8 +24,8 @@ class TheLedger extends StatelessWidget {
       ),
       child: Column(
         children: ledgerList.map((ledger) {
-          final isPayer = ledger.payer.id == currUser.id;
-          final isFriend = ledger.friend.id == currUser.id;
+          final isPayer = ledger.payer.number == currUser.number;
+          final isFriend = ledger.friend.number == currUser.number;
 
           final textColor = isPayer
               ? ColorsConstants.warningRed

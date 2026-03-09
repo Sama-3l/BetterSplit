@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 
 abstract class UserLocalDataSource {
   Future<void> saveUser(UserModel user);
+  Future<void> updateUser(UserModel user);
   Future<UserModel?> getCurrentUser();
   Future<UserModel?> getUserByNumber(String phoneNumber);
   Future<List<UserModel>> getAllUsers();
@@ -14,6 +15,12 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   Future<void> saveUser(UserModel user) async {
+    final box = await Hive.openBox<UserModel>(_userBoxName);
+    await box.put(user.id, user);
+  }
+
+  @override
+  Future<void> updateUser(UserModel user) async {
     final box = await Hive.openBox<UserModel>(_userBoxName);
     await box.put(user.id, user);
   }

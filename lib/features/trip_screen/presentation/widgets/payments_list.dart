@@ -36,6 +36,7 @@ class PaymentsList extends StatelessWidget {
                 user: currUser,
                 radius: 0,
                 tripHeader: false,
+                onSwiped: (ledger) {},
               ),
               TripHeader(onAddFriend: () {}, onMergeFinalQR: () {}),
               Padding(
@@ -72,6 +73,7 @@ class PaymentsList extends StatelessWidget {
                   user: currUser,
                   radius: 32,
                   tripHeader: false,
+                  onSwiped: (ledger) {},
                 ),
               ),
 
