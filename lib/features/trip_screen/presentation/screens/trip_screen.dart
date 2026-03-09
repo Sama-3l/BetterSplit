@@ -32,7 +32,7 @@ class _TripScreenState extends State<TripScreen> {
       create: (context) => sl<TripScreenCubit>()..initialize(widget.trip),
       child: BlocBuilder<TripScreenCubit, TripScreenState>(
         builder: (context, state) {
-          print(state.trip!.netBalance);
+          print(state.trip!.payments);
           final cubit = context.read<TripScreenCubit>();
           if (state.trip == null) {
             return Center(
@@ -114,6 +114,10 @@ class _TripScreenState extends State<TripScreen> {
                     trip: state.trip!,
                     currUser: widget.currUser,
                     onAddPayment: () async {
+                      final latestTrip = context
+                          .read<TripScreenCubit>()
+                          .state
+                          .trip!;
                       final result = await showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
@@ -134,11 +138,11 @@ class _TripScreenState extends State<TripScreen> {
                             ),
                           child: AddPaymentBottomSheet(
                             currUser: widget.currUser,
-                            trip: state.trip!,
+                            trip: latestTrip,
                           ),
                         ),
                       );
-                      print((result as TripEntity?)!.netBalance);
+                      // print((result as TripEntity?)!.netBalance);
                       if (result != null) {
                         cubit.updateTrip((result as TripEntity?)!);
                       }

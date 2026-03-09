@@ -1,11 +1,13 @@
 import 'package:bettersplitapp/core/utils/constants/enums.dart';
 import 'package:bettersplitapp/core/utils/constants/methods.dart';
+import 'package:bettersplitapp/features/home/presentation/blocs/cubits/HomeScreenCubit/home_screen_cubit.dart';
 import 'package:bettersplitapp/routes/app_route_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bettersplitapp/features/trip_screen/domain/entities/trip.dart';
 import 'package:bettersplitapp/features/home/domain/entities/user.dart';
 import 'package:bettersplitapp/core/utils/constants/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,12 +22,16 @@ class TripTile extends StatelessWidget {
     // fetch from your trip.netBalance map
     final double amount = trip.netBalance[currentUser.number] ?? 0;
     final String selectedCurrency = trip.selectedCurrency;
+    final cubit = context.read<HomeScreenCubit>();
 
     return InkWell(
-      onTap: () => GoRouter.of(context).pushNamed(
-        Routes.tripScreen,
-        extra: {'trip': trip, 'currUser': currentUser},
-      ),
+      onTap: () async {
+        await GoRouter.of(context).pushNamed(
+          Routes.tripScreen,
+          extra: {'trip': trip, 'currUser': currentUser},
+        );
+        cubit.updateHomeScreen(currentUser);
+      },
       child: Column(
         children: [
           Row(

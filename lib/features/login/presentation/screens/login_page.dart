@@ -88,6 +88,7 @@ class LoginPage extends StatelessWidget {
                       const SizedBox(height: 16),
                       InputField(
                         controller: state.upiIDController,
+                        textCapitalization: TextCapitalization.none,
                         hintText: 'raghvendramishra2002@okaxis',
                         title: 'UPI ID',
                       ),

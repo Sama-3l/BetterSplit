@@ -129,23 +129,35 @@ class PaymentsList extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return Dismissible(
                       key: ValueKey(
-                        trip.payments[index].id,
+                        trip.payments[trip.payments.length - 1 - index].id,
                       ), // unique key per payment
                       direction: DismissDirection.endToStart,
                       onDismissed: (_) {
-                        for (var s in trip.payments[index].shares) {
+                        for (var s
+                            in trip
+                                .payments[trip.payments.length - 1 - index]
+                                .shares) {
                           s.isIncluded =
                               s.isIncluded ||
                               (s.amount != null && s.amount != 0);
                         }
                         final newTrip = Methods.addPayment(
-                          title: trip.payments[index].title,
+                          title: trip
+                              .payments[trip.payments.length - 1 - index]
+                              .title,
                           trip: trip,
-                          paidByUser: trip.payments[index].payer,
-                          amount: trip.payments[index].amount,
-                          userShares: trip.payments[index].shares,
+                          paidByUser: trip
+                              .payments[trip.payments.length - 1 - index]
+                              .payer,
+                          amount: trip
+                              .payments[trip.payments.length - 1 - index]
+                              .amount,
+                          userShares: trip
+                              .payments[trip.payments.length - 1 - index]
+                              .shares,
                           delete: true,
-                          currPayment: trip.payments[index],
+                          currPayment:
+                              trip.payments[trip.payments.length - 1 - index],
                         );
                         cubit.updateTrip(newTrip);
                       },
@@ -181,7 +193,8 @@ class PaymentsList extends StatelessWidget {
                           child: PaymentTile(
                             trip: trip,
                             currUser: currUser,
-                            payment: trip.payments[index],
+                            payment:
+                                trip.payments[trip.payments.length - 1 - index],
                           ),
                         ),
                       ),

@@ -161,12 +161,9 @@ class Methods {
     bool delete = false,
   }) {
     final netBalance = Map<String, double>.from(trip.netBalance);
-
     if (delete) {
       netBalance[paidByUser.number] =
           (netBalance[paidByUser.number] ?? 0) - amount;
-      // Methods.safeParse(state.amount);
-
       for (final share in userShares) {
         if (share.isIncluded) {
           netBalance[share.user.number] =
@@ -176,7 +173,6 @@ class Methods {
     } else {
       netBalance[paidByUser.number] =
           (netBalance[paidByUser.number] ?? 0) + amount;
-
       for (final share in userShares) {
         if (share.isIncluded) {
           netBalance[share.user.number] =
@@ -191,22 +187,15 @@ class Methods {
             (a, b) => (a['value'] as double).compareTo(b['value'] as double),
           );
 
-    print(sortedByValueAscending);
-    print("HERE\n\n\n$netBalance");
-
     final userLookup = {for (var u in trip.users) u.number: u};
-
     int left = 0;
     int right = sortedByValueAscending.length - 1;
-
-    trip.ledger.clear();
-    // List<LedgerEntity> l = [];
+    final List<LedgerEntity> newLedger = [];
 
     while (left < right) {
       double debit = -((sortedByValueAscending[left]['value']) as double);
       double credit = (sortedByValueAscending[right]['value']) as double;
       double settlement = debit < credit ? debit : credit;
-
       sortedByValueAscending[left]['value'] =
           (sortedByValueAscending[left]['value'] as double) + settlement;
       sortedByValueAscending[right]['value'] =
@@ -216,7 +205,6 @@ class Methods {
         final payer = userLookup[sortedByValueAscending[left]['key'] as String];
         final receiver =
             userLookup[sortedByValueAscending[right]['key'] as String];
-
         if (payer != null && receiver != null) {
           final ledgerEntry = LedgerEntity(
             id: Uuid().v4(),
@@ -225,8 +213,7 @@ class Methods {
             friend: receiver,
             amount: settlement,
           );
-          // l.add(ledgerEntry);
-          trip.ledger.add(ledgerEntry);
+          newLedger.add(ledgerEntry);
         }
       }
 
@@ -238,13 +225,11 @@ class Methods {
       }
     }
 
-    // print("\n");
-    // print(l.map((e) => "${e.payer.name} -> ${e.friend.name} : ${e.amount}"));
-    // print(netBalance);
-    // print("\n");
-
+    List<PaymentEntity> newPayments;
     if (delete) {
-      trip.payments.removeWhere((e) => e.id == currPayment!.id);
+      newPayments = trip.payments
+          .where((e) => e.id != currPayment!.id)
+          .toList();
     } else {
       final payment = PaymentEntity(
         id: Uuid().v4(),
@@ -255,10 +240,14 @@ class Methods {
         date: DateTime.now(),
         settled: false,
       );
-      trip.payments.add(payment);
+      newPayments = [...trip.payments, payment];
     }
 
-    return trip.copyWith(netBalance: netBalance);
+    return trip.copyWith(
+      netBalance: netBalance,
+      ledger: newLedger,
+      payments: newPayments,
+    );
   }
 
   static double getExpenditure(List<TripEntity> entities, UserEntity currUser) {

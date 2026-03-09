@@ -11,7 +11,7 @@ import 'package:bettersplitapp/injection_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+// import 'package:hive/hive.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key, required this.user});
@@ -144,7 +144,7 @@ class HomePage extends StatelessWidget {
                             itemCount: state.trips.length,
                             itemBuilder: (BuildContext context, int index) {
                               final trip = state.trips[index];
-
+                              print(trip.netBalance);
                               return Dismissible(
                                 key: ValueKey(trip.id),
                                 direction: DismissDirection.endToStart,

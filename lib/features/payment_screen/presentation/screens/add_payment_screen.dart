@@ -4,8 +4,6 @@ import 'package:bettersplitapp/core/utils/constants/methods.dart';
 import 'package:bettersplitapp/core/utils/constants/theme.dart';
 import 'package:bettersplitapp/features/home/domain/entities/user.dart';
 import 'package:bettersplitapp/features/payment_screen/domain/entities/payment.dart';
-import 'package:bettersplitapp/features/payment_screen/domain/entities/user_share.dart';
-import 'package:bettersplitapp/features/payment_screen/domain/models/local/user_share_model_local.dart';
 import 'package:bettersplitapp/features/payment_screen/presentation/blocs/cubits/AddPaymentCubit/add_payment_cubit.dart';
 import 'package:bettersplitapp/features/payment_screen/presentation/widgets/add_payment_header.dart';
 import 'package:bettersplitapp/features/payment_screen/presentation/widgets/friends_shares.dart';
@@ -61,6 +59,7 @@ class _AddPaymentBottomSheetState extends State<AddPaymentBottomSheet> {
     return BlocBuilder<AddPaymentCubit, AddPaymentState>(
       builder: (context, state) {
         final cubit = context.read<AddPaymentCubit>();
+        // print(widget.trip.payments);
         return Align(
           alignment: Alignment.bottomCenter,
           child: ClipRRect(
@@ -88,11 +87,6 @@ class _AddPaymentBottomSheetState extends State<AddPaymentBottomSheet> {
                                 s.isIncluded ||
                                 (s.amount != null && s.amount != 0);
                           }
-                          print(
-                            state.userShares.map(
-                              (e) => (e.isIncluded, e.amount),
-                            ),
-                          );
                           final payment = Methods.addPayment(
                             title: _paymentNameController.text,
                             trip: widget.trip,

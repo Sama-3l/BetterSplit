@@ -55,7 +55,8 @@ class AddContactsScreen extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: CircularButton(
                             icon: CupertinoIcons.arrow_left,
-                            onTap: () => GoRouter.of(context).pop([]),
+                            onTap: () =>
+                                GoRouter.of(context).pop(<UserModel>[]),
                             color: ColorsConstants.backgroundBlack,
                           ),
                         ),

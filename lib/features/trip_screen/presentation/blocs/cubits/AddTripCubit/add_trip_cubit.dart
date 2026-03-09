@@ -40,12 +40,14 @@ class AddTripCubit extends Cubit<AddTripState> {
         withProperties: true,
       );
       List<UserModel> usersAdded = [];
-      usersAdded = await showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (context) => AddContactsScreen(contacts: contacts),
-      );
+      usersAdded =
+          await showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (context) => AddContactsScreen(contacts: contacts),
+          ) ??
+          <UserModel>[];
       if (usersAdded.isNotEmpty) {
         state.users.addAll((usersAdded).map((e) => e.toJson()));
       }
@@ -91,6 +93,7 @@ class AddTripCubit extends Cubit<AddTripState> {
           }
         });
       }
+      print(trip.payments);
       await saveTripUseCase(trip);
       GoRouter.of(context).pop(true);
     }
