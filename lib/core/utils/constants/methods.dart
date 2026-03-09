@@ -276,8 +276,6 @@ class TestingMethods {
 
   static getAllUsers() async {
     final box = await Hive.openBox<UserModel>('userBox');
-    try {
-      print(box.values.map((e) => e.name));
-    } catch (_) {}
+    try {} catch (_) {}
   }
 }
