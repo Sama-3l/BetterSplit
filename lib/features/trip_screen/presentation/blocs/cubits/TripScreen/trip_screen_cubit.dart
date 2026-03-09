@@ -51,31 +51,21 @@ class TripScreenCubit extends Cubit<TripScreenState> {
     }
     final netBalance = Map<String, double>.from(trip.netBalance);
 
-    print("HERE\n\n$netBalance\n\nWE");
     netBalance[payment.payer.number] =
         (netBalance[payment.payer.number] ?? 0) - payment.amount;
 
-    print("HERE\n\n$netBalance\n\nWE");
-
     for (final share in payment.shares) {
       if (share.isIncluded) {
-        print(
-          "${share.user.number} \t ${netBalance[share.user.number]} ${share.amount} ${(netBalance[share.user.number] ?? 0) + (share.amount ?? 0)}",
-        );
         netBalance[share.user.number] =
             (netBalance[share.user.number] ?? 0) + (share.amount ?? 0);
       }
     }
-
-    print("HERE\n\n$netBalance\n\nWE");
 
     final sortedByValueAscending =
         netBalance.entries.map((e) => {'key': e.key, 'value': e.value}).toList()
           ..sort(
             (a, b) => (a['value'] as double).compareTo(b['value'] as double),
           );
-
-    print("\n$sortedByValueAscending\n");
 
     final userLookup = {for (var u in trip.users) u.number: u};
 
@@ -119,12 +109,12 @@ class TripScreenCubit extends Cubit<TripScreenState> {
         right--;
       }
     }
-    print("\n");
-    print(
-      ledgers.map((e) => "${e.payer.name} -> ${e.friend.name} : ${e.amount}"),
-    );
-    print(netBalance);
-    print("\n");
+    // print("\n");
+    // print(
+    //   ledgers.map((e) => "${e.payer.name} -> ${e.friend.name} : ${e.amount}"),
+    // );
+    // print(netBalance);
+    // print("\n");
     // await deletePaymentUseCase(payment);
   }
 

@@ -32,7 +32,7 @@ class _TripScreenState extends State<TripScreen> {
       create: (context) => sl<TripScreenCubit>()..initialize(widget.trip),
       child: BlocBuilder<TripScreenCubit, TripScreenState>(
         builder: (context, state) {
-          print(state.trip!.payments);
+          // print(state.trip!.payments);
           final cubit = context.read<TripScreenCubit>();
           if (state.trip == null) {
             return Center(

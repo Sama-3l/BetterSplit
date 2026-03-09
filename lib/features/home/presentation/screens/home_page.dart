@@ -37,7 +37,6 @@ class HomePage extends StatelessWidget {
                   subtitle: "Hello!",
                   onTap: () {
                     // deleteCurrentUser(modelContext)
-                    print(user.id);
                   },
                 ),
                 if (state.trips.isEmpty) ...[
@@ -45,9 +44,7 @@ class HomePage extends StatelessWidget {
                     currentTab: 0,
                     debts: [],
                     user: user,
-                    onSwiped: (ledger) {
-                      print(ledger.trip);
-                    },
+                    onSwiped: (ledger) {},
                   ),
                   const SizedBox(height: 16),
                   TripsHeaderWidget(
@@ -170,7 +167,6 @@ class HomePage extends StatelessWidget {
                             itemCount: state.trips.length,
                             itemBuilder: (BuildContext context, int index) {
                               final trip = state.trips[index];
-                              print(trip.netBalance);
                               return Dismissible(
                                 key: ValueKey(trip.id),
                                 direction: DismissDirection.endToStart,

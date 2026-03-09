@@ -1,4 +1,5 @@
 import 'package:bettersplitapp/core/usecase/usecase.dart';
+import 'package:bettersplitapp/core/utils/constants/extensions.dart';
 import 'package:bettersplitapp/core/utils/constants/theme.dart';
 import 'package:bettersplitapp/features/friends/data/usecases/delete_all_users_usecase.dart';
 import 'package:bettersplitapp/features/friends/data/usecases/get_all_users_usecase.dart';
@@ -32,7 +33,7 @@ class LoginCubit extends Cubit<LoginState> {
       user = UserEntity(
         id: Uuid().v4(),
         name: state.nameController.text,
-        userName: state.usernameController.text,
+        userName: state.usernameController.text.toCapitalized,
         number: state.phoneNumberController.text,
         upiID: state.upiIDController.text,
         currentUser: true,
