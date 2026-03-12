@@ -1,6 +1,8 @@
 import 'package:bettersplitapp/core/utils/common/textfield.dart';
 import 'package:bettersplitapp/core/utils/constants/theme.dart';
 import 'package:bettersplitapp/features/home/domain/entities/user.dart';
+import 'package:bettersplitapp/features/home/domain/models/local/user_model_local.dart';
+import 'package:bettersplitapp/features/trip_screen/domain/entities/trip.dart';
 import 'package:bettersplitapp/features/trip_screen/presentation/blocs/cubits/AddTripCubit/add_trip_cubit.dart';
 import 'package:bettersplitapp/features/trip_screen/presentation/widgets/add_trip_header.dart';
 import 'package:bettersplitapp/features/trip_screen/presentation/widgets/add_trip_select_logo.dart';
@@ -11,8 +13,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddTripBottomSheet extends StatefulWidget {
   final UserEntity currentUser;
+  final bool editTrip;
+  final TripEntity? trip;
 
-  const AddTripBottomSheet({super.key, required this.currentUser});
+  const AddTripBottomSheet({
+    super.key,
+    required this.currentUser,
+    this.editTrip = false,
+    this.trip,
+  });
 
   @override
   State<AddTripBottomSheet> createState() => _AddTripBottomSheetState();
@@ -24,7 +33,14 @@ class _AddTripBottomSheetState extends State<AddTripBottomSheet> {
   @override
   void initState() {
     super.initState();
-    context.read<AddTripCubit>().init(widget.currentUser);
+    if (widget.editTrip) {
+      tripName.text = widget.trip!.title;
+    }
+    context.read<AddTripCubit>().init(
+      widget.currentUser,
+      editTrip: widget.editTrip,
+      trip: widget.trip,
+    );
   }
 
   @override
@@ -53,7 +69,9 @@ class _AddTripBottomSheetState extends State<AddTripBottomSheet> {
                     onCancel: () {
                       Navigator.of(context).pop(false);
                     },
-                    onApply: () => cubit.addTrip(tripName.text, context),
+                    onApply: () => widget.editTrip
+                        ? cubit.editTrip(tripName.text, widget.trip!, context)
+                        : cubit.addTrip(tripName.text, context),
                   ),
 
                   AddTripSelectLogo(
@@ -68,68 +86,76 @@ class _AddTripBottomSheetState extends State<AddTripBottomSheet> {
                     controller: tripName,
                   ),
                   const SizedBox(height: 16),
-
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Add Friends",
-                          style: TextStyles.fustatExtraBold.copyWith(
-                            fontSize: 12,
-                            letterSpacing: -0.5,
-                            color: ColorsConstants.defaultWhite,
-                          ),
-                        ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: () => cubit.addFriends(context),
-                          child: Icon(
-                            CupertinoIcons.person_crop_circle_badge_plus,
-                            size: 16,
-                            color: ColorsConstants.defaultWhite,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: ColorsConstants.surfaceBlack,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: ListView.separated(
-                      controller: scrollController,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.users.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        final user = state.users[index];
-                        return Dismissible(
-                          key: ValueKey(user["id"] ?? index),
-                          direction: user["currentUser"] == true
-                              ? DismissDirection.none
-                              : DismissDirection.endToStart,
-                          onDismissed: (_) => cubit.deleteFriend(index),
-                          background: Container(
-                            color: ColorsConstants.warningRed,
-                            alignment: Alignment.centerRight,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Icon(
-                              CupertinoIcons.delete,
+                  if (!widget.editTrip) ...[
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Add Friends",
+                            style: TextStyles.fustatExtraBold.copyWith(
+                              fontSize: 12,
+                              letterSpacing: -0.5,
                               color: ColorsConstants.defaultWhite,
                             ),
                           ),
-                          child: FriendTile(user: user),
-                        );
-                      },
+                          const Spacer(),
+                          InkWell(
+                            onTap: () => cubit.addFriends(
+                              context,
+                              initialUsers: widget.trip!.users
+                                  .map((e) => UserModel.fromEntity(e).toJson())
+                                  .toList(),
+                            ),
+                            child: Icon(
+                              CupertinoIcons.person_crop_circle_badge_plus,
+                              size: 16,
+                              color: ColorsConstants.defaultWhite,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 16),
+
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 16),
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: ColorsConstants.surfaceBlack,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: ListView.separated(
+                        controller: scrollController,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.users.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 12),
+                        itemBuilder: (context, index) {
+                          final user = state.users[index];
+                          return Dismissible(
+                            key: ValueKey(user["id"] ?? index),
+                            direction: user["currentUser"] == true
+                                ? DismissDirection.none
+                                : DismissDirection.endToStart,
+                            onDismissed: (_) => cubit.deleteFriend(index),
+                            background: Container(
+                              color: ColorsConstants.warningRed,
+                              alignment: Alignment.centerRight,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              child: Icon(
+                                CupertinoIcons.delete,
+                                color: ColorsConstants.defaultWhite,
+                              ),
+                            ),
+                            child: FriendTile(user: user),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ],
               ),
             );

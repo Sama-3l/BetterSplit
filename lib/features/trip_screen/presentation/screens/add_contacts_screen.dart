@@ -11,9 +11,14 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 class AddContactsScreen extends StatelessWidget {
-  AddContactsScreen({super.key, required this.contacts});
+  AddContactsScreen({
+    super.key,
+    required this.contacts,
+    required this.initialUsers,
+  });
 
   final List<Contact> contacts;
+  final List<Map<String, dynamic>> initialUsers;
   final TextEditingController controller = TextEditingController();
   final FocusNode focusNode = FocusNode();
 
@@ -30,6 +35,7 @@ class AddContactsScreen extends StatelessWidget {
           focusNode.addListener(() {
             focusNotifier.value = focusNode.hasFocus;
           });
+          final numbersIncluded = initialUsers.map((e) => e["number"]);
           return FractionallySizedBox(
             heightFactor: 0.75,
             child: Container(
@@ -151,12 +157,15 @@ class AddContactsScreen extends StatelessWidget {
                           final contactKey = ValueKey(
                             thisContacts[index].$1.id,
                           );
-
+                          final isPresent = numbersIncluded.contains(
+                            thisContacts[index].$1.phones,
+                          );
                           return AddContactTile(
                             key: contactKey,
-
                             user: thisContacts[index].$1,
-                            selected: thisContacts[index].$3,
+                            selected: isPresent
+                                ? isPresent
+                                : thisContacts[index].$3,
                             onUpdateSelectedNumber: (value) =>
                                 cubit.updateNumber(
                                   index - 1,

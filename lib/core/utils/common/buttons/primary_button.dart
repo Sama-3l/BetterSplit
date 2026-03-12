@@ -7,6 +7,7 @@ class PrimaryButton extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
   final IconData? icon;
+  final double iconSize;
 
   const PrimaryButton({
     super.key,
@@ -14,6 +15,7 @@ class PrimaryButton extends StatelessWidget {
     this.title = "Apply",
     required this.onTap,
     this.icon,
+    this.iconSize = 12,
   });
 
   @override
@@ -32,6 +34,16 @@ class PrimaryButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            if (icon != null) ...[
+              Icon(
+                icon,
+                size: iconSize,
+                color: secondary
+                    ? ColorsConstants.backgroundBlack
+                    : ColorsConstants.defaultWhite,
+              ),
+              const SizedBox(width: 8),
+            ],
             Text(
               title,
               style: TextStyles.fustatBold.copyWith(
@@ -43,16 +55,6 @@ class PrimaryButton extends StatelessWidget {
                     : ColorsConstants.defaultWhite,
               ),
             ),
-            if (icon != null) ...[
-              const SizedBox(width: 8),
-              Icon(
-                icon,
-                size: 12,
-                color: secondary
-                    ? ColorsConstants.backgroundBlack
-                    : ColorsConstants.defaultWhite,
-              ),
-            ],
           ],
         ),
       ),

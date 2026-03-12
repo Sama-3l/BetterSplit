@@ -5,11 +5,11 @@ import 'package:bettersplitapp/features/trip_screen/domain/entities/ledger.dart'
 
 class TripEntity {
   final String id;
-  final String title;
+  String title;
   final DateTime startDate;
   final DateTime endDate;
   final String qrInfo;
-  final String icon;
+  String icon;
   final bool goingOn;
   final String stats;
   final String selectedCurrency;
@@ -19,7 +19,7 @@ class TripEntity {
   final List<LedgerEntity> ledger;
   final Map<String, double> netBalance;
 
-  const TripEntity({
+  TripEntity({
     required this.id,
     required this.title,
     required this.startDate,

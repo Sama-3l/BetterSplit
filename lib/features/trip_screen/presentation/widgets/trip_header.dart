@@ -3,12 +3,12 @@ import 'package:bettersplitapp/core/utils/constants/theme.dart';
 import 'package:flutter/cupertino.dart';
 
 class TripHeader extends StatelessWidget {
-  final Function() onAddFriend;
+  final Function() onEditTrip;
   final Function() onMergeFinalQR;
 
   const TripHeader({
     super.key,
-    required this.onAddFriend,
+    required this.onEditTrip,
     required this.onMergeFinalQR,
   });
 
@@ -25,19 +25,20 @@ class TripHeader extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 16),
       child: Row(
         children: [
+          // Expanded(
+          //   child: PrimaryButton(
+          //     title: "Merge Final QR",
+          //     icon: CupertinoIcons.qrcode,
+          //     onTap: () => onMergeFinalQR(),
+          //   ),
+          // ),
+          // const SizedBox(width: 8),
           Expanded(
             child: PrimaryButton(
-              title: "Merge Final QR",
-              icon: CupertinoIcons.qrcode,
-              onTap: () => onMergeFinalQR(),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: PrimaryButton(
-              title: "Add Friends",
-              icon: CupertinoIcons.person_crop_circle_badge_plus,
-              onTap: () => onAddFriend(),
+              title: "Edit Trip",
+              iconSize: 20,
+              icon: CupertinoIcons.pencil,
+              onTap: () => onEditTrip(),
             ),
           ),
         ],

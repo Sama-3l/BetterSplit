@@ -25,16 +25,32 @@ class AddTripCubit extends Cubit<AddTripState> {
     this.getUserByNumberUsecase,
   ) : super(AddTripInitial(users: [], selectedLogo: TripLogo.car));
 
-  init(UserEntity currentUser) {
-    state.users.clear();
-    state.users.add(UserModel.fromEntity(currentUser).toJson());
-    emit(AddTripUpdate(users: state.users, selectedLogo: state.selectedLogo));
+  init(UserEntity currentUser, {bool editTrip = false, TripEntity? trip}) {
+    if (editTrip) {
+      state.users.clear();
+      state.users.addAll(
+        trip!.users.map((e) => UserModel.fromEntity(e).toJson()).toList(),
+      );
+      emit(
+        AddTripUpdate(
+          users: state.users,
+          selectedLogo: TripLogo.fromName(trip.icon),
+        ),
+      );
+    } else {
+      state.users.clear();
+      state.users.add(UserModel.fromEntity(currentUser).toJson());
+      emit(AddTripUpdate(users: state.users, selectedLogo: state.selectedLogo));
+    }
   }
 
   changeSelectedLogo(TripLogo logo) =>
       emit(AddTripUpdate(users: state.users, selectedLogo: logo));
 
-  addFriends(BuildContext context) async {
+  addFriends(
+    BuildContext context, {
+    List<Map<String, dynamic>>? initialUsers,
+  }) async {
     if (await FlutterContacts.requestPermission()) {
       List<Contact> contacts = await FlutterContacts.getContacts(
         withProperties: true,
@@ -45,7 +61,10 @@ class AddTripCubit extends Cubit<AddTripState> {
             context: context,
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
-            builder: (context) => AddContactsScreen(contacts: contacts),
+            builder: (context) => AddContactsScreen(
+              contacts: contacts,
+              initialUsers: initialUsers ?? [],
+            ),
           ) ??
           <UserModel>[];
       if (usersAdded.isNotEmpty) {
@@ -95,6 +114,14 @@ class AddTripCubit extends Cubit<AddTripState> {
       }
       await saveTripUseCase(trip);
       GoRouter.of(context).pop(true);
+    }
+  }
+
+  editTrip(String name, TripEntity trip, BuildContext context) async {
+    if (state.users.length > 1 && name.isNotEmpty) {
+      trip.title = name;
+      trip.icon = state.selectedLogo.name;
+      GoRouter.of(context).pop(trip);
     }
   }
 }

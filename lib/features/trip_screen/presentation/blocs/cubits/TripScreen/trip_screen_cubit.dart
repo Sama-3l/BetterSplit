@@ -31,6 +31,8 @@ class TripScreenCubit extends Cubit<TripScreenState> {
 
   updateTrip(TripEntity trip) async {
     final entity = UpdateTripUsecaseEntity(
+      title: trip.title,
+      icon: trip.icon,
       tripId: trip.id,
       selectedCurrency: trip.selectedCurrency,
       netBalance: trip.netBalance,
