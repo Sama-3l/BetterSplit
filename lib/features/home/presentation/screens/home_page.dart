@@ -2,6 +2,7 @@ import 'package:bettersplitapp/core/utils/common/buttons/circular_button.dart';
 import 'package:bettersplitapp/core/utils/constants/methods.dart';
 import 'package:bettersplitapp/features/home/presentation/widgets/trip_tile.dart';
 import 'package:bettersplitapp/features/home/presentation/widgets/trips_header.dart';
+import 'package:bettersplitapp/features/home/presentation/widgets/user_ledger.dart';
 import 'package:bettersplitapp/features/payment_screen/domain/entities/user_share.dart';
 import 'package:bettersplitapp/features/top_bar_widget/screens/top_bar_widgets.dart';
 import 'package:bettersplitapp/core/utils/constants/theme.dart';
@@ -28,6 +29,13 @@ class HomePage extends StatelessWidget {
         builder: (context, state) {
           final cubit = context.read<HomeScreenCubit>();
           // Hive.deleteFromDisk();
+          final debts = state.ledgers
+              .where(
+                (e) =>
+                    e.payer.number == user.number ||
+                    e.friend.number == user.number,
+              )
+              .toList();
           return Scaffold(
             backgroundColor: ColorsConstants.backgroundBlack,
             body: Column(
@@ -88,7 +96,7 @@ class HomePage extends StatelessWidget {
                           child: TopBarWidgets(
                             currentTab: 0,
                             debts: state.ledgers
-                                .where((e) => e.payer.id == user.id)
+                                .where((e) => e.payer.number == user.number)
                                 .toList(),
                             user: user,
                             onSwiped: (ledger) {
@@ -111,6 +119,28 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
 
+                        if (debts.isNotEmpty) ...[
+                          SliverPadding(
+                            padding: const EdgeInsets.only(top: 24.0),
+                            sliver: SliverPersistentHeader(
+                              pinned: true,
+                              delegate: TripsHeaderDelegate(
+                                title: 'User Ledger',
+                                onSearch: (String search) {},
+                                options: [],
+                              ),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                top: 8.0,
+                                bottom: 16.0,
+                              ),
+                              child: UserLedger(ledger: debts, currUser: user),
+                            ),
+                          ),
+                        ],
                         SliverPadding(
                           padding: EdgeInsets.only(top: 16),
                           sliver: SliverPersistentHeader(

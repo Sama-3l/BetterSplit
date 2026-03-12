@@ -57,7 +57,7 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   updateHomeScreen(UserEntity currentUser) async {
     final result = await getAllTripsUsecase(currentUser.id);
     result.fold((failure) {}, (trips) {
-      final ledgers = state.trips.expand((e) => e.ledger).toList();
+      final ledgers = trips.expand((e) => e.ledger).toList();
       emit(HomeScreenUpdated(trips: trips, ledgers: ledgers));
     });
   }
