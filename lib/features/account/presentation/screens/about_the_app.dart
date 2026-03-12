@@ -11,7 +11,6 @@ class AboutTheApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AboutTheAppCubit, AboutTheAppState>(
       builder: (context, state) {
-        print(state);
         return Scaffold(
           backgroundColor: ColorsConstants.backgroundBlack,
           body: Column(
