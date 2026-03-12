@@ -1,3 +1,4 @@
+import 'package:bettersplitapp/features/account/presentation/screens/about_the_app.dart';
 import 'package:bettersplitapp/features/home/domain/entities/user.dart';
 import 'package:bettersplitapp/features/main_app/presentation/screens/main_app.dart';
 import 'package:bettersplitapp/features/trip_screen/domain/entities/trip.dart';
@@ -28,6 +29,11 @@ class AppRouter {
             child: TripScreen(trip: trip, currUser: currUser),
           );
         },
+      ),
+      GoRoute(
+        name: Routes.aboutTheApp,
+        path: Routes.aboutTheApp,
+        pageBuilder: (context, state) => MaterialPage(child: AboutTheApp()),
       ),
     ],
   );

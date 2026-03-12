@@ -4,9 +4,11 @@ import 'package:bettersplitapp/features/home/domain/entities/user.dart';
 import 'package:bettersplitapp/features/main_app/presentation/blocs/cubits/MainAppCubit/main_app_cubit.dart';
 import 'package:bettersplitapp/features/top_bar_widget/screens/top_bar.dart';
 import 'package:bettersplitapp/features/top_bar_widget/screens/top_bar_widgets.dart';
+import 'package:bettersplitapp/routes/app_route_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
 
 class AccountPage extends StatelessWidget {
@@ -36,7 +38,8 @@ class AccountPage extends StatelessWidget {
                   MenuTile(
                     title: "About the app",
                     icon: CupertinoIcons.info,
-                    onTap: () {},
+                    onTap: () =>
+                        GoRouter.of(context).pushNamed(Routes.aboutTheApp),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
