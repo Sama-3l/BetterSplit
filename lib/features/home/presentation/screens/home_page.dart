@@ -123,6 +123,7 @@ class HomePage extends StatelessWidget {
                           SliverPadding(
                             padding: const EdgeInsets.only(top: 24.0),
                             sliver: SliverPersistentHeader(
+                              key: ValueKey('user_ledger_header'),
                               pinned: true,
                               delegate: TripsHeaderDelegate(
                                 title: 'User Ledger',
@@ -144,6 +145,7 @@ class HomePage extends StatelessWidget {
                         SliverPadding(
                           padding: EdgeInsets.only(top: 16),
                           sliver: SliverPersistentHeader(
+                            key: ValueKey('trips_header'),
                             pinned: true,
                             delegate: TripsHeaderDelegate(
                               options: [

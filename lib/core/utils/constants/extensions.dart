@@ -17,3 +17,9 @@ extension StringCasingExtension on String {
     ' ',
   ).split(' ').map((str) => str.toCapitalized).join(' ');
 }
+
+extension DoubleNormalize on double {
+  double normalizeZero({double epsilon = 0.0001}) {
+    return abs() <= epsilon ? 0.00 : this;
+  }
+}

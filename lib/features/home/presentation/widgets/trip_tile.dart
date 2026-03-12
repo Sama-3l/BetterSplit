@@ -1,4 +1,5 @@
 import 'package:bettersplitapp/core/utils/constants/enums.dart';
+import 'package:bettersplitapp/core/utils/constants/extensions.dart';
 import 'package:bettersplitapp/core/utils/constants/methods.dart';
 import 'package:bettersplitapp/features/home/presentation/blocs/cubits/HomeScreenCubit/home_screen_cubit.dart';
 import 'package:bettersplitapp/routes/app_route_constants.dart';
@@ -20,7 +21,8 @@ class TripTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // fetch from your trip.netBalance map
-    final double amount = trip.netBalance[currentUser.number] ?? 0;
+    final double amount = (trip.netBalance[currentUser.number] ?? 0.00)
+        .normalizeZero();
     final String selectedCurrency = trip.selectedCurrency;
     final cubit = context.read<HomeScreenCubit>();
 
