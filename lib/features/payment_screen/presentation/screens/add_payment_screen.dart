@@ -82,19 +82,25 @@ class _AddPaymentBottomSheetState extends State<AddPaymentBottomSheet> {
                         trip: widget.trip,
                         users: widget.trip.users,
                         onApply: () {
-                          for (var s in state.userShares) {
-                            s.isIncluded =
-                                s.isIncluded ||
-                                (s.amount != null && s.amount != 0);
-                          }
-                          final payment = Methods.addPayment(
-                            title: _paymentNameController.text,
-                            trip: widget.trip,
-                            paidByUser: state.paidByUser!,
-                            amount: Methods.safeParse(state.amount),
-                            userShares: state.userShares,
+                          final peoplePresent = state.userShares.where(
+                            (e) => e.isIncluded,
                           );
-                          Navigator.of(context).pop(payment);
+
+                          if (peoplePresent.isNotEmpty) {
+                            for (var s in state.userShares) {
+                              s.isIncluded =
+                                  s.isIncluded ||
+                                  (s.amount != null && s.amount != 0);
+                            }
+                            final payment = Methods.addPayment(
+                              title: _paymentNameController.text,
+                              trip: widget.trip,
+                              paidByUser: state.paidByUser!,
+                              amount: Methods.safeParse(state.amount),
+                              userShares: state.userShares,
+                            );
+                            Navigator.of(context).pop(payment);
+                          }
                         },
                       ),
 
